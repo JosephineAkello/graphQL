@@ -1,0 +1,26 @@
+version: "3"
+
+networks:
+  web: #docker network create web
+    external: true
+  internal:
+    external: false
+
+volumes:
+    postgresql-volume:
+        external: true
+
+services:
+    postgres: # docker volume create --name postgresql-volume -d local
+        image: postgres:12-alpine
+        container_name: postgres
+        ports: 
+            - 5432:5432
+        environment:
+          POSTGRES_PASSWORD: password
+          POSTGRES_USER: prisma
+          POSTGRES_DB: graphql
+        networks:
+            - web 
+        volumes: 
+            -  postgresql-volume:/var/lib/postgresql/data        
